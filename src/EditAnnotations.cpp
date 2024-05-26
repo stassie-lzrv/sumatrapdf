@@ -37,6 +37,7 @@ extern "C" {
 #include "SumatraPDF.h"
 #include "Canvas.h"
 #include "Commands.h"
+#include "ColoredAnnotations.h"
 
 #include "utils/Log.h"
 
@@ -1477,4 +1478,20 @@ void ShowEditAnnotationsWindow(WindowTab* tab) {
     // important to call this after hooking up onSize to ensure
     // first layout is triggered
     ew->SetIsVisible(true);
+}
+
+void AddAnnotation(const std::string& type, const std::string& content, float x, float y) {
+    Annotations annot(this);
+    if (type == "comment") {
+        annot.AddComment(content, x, y);
+    } else if (type == "note") {
+        annot.AddNote(content, x, y);
+    }
+}
+
+void AddAnnotation(const std::string& type, const std::string& content, float x1, float y1, float x2, float y2) {
+    Annotations annot(this);
+    if (type == "highlight") {
+        annot.HighlightText(x1, y1, x2, y2);
+    }
 }

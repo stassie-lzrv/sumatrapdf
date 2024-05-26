@@ -35,6 +35,7 @@ extern "C" {
 #include "SumatraConfig.h"
 #include "Settings.h"
 #include "GlobalPrefs.h"
+#include "ColoredAnnotation.h"
 
 #include "utils/Log.h"
 
@@ -3172,6 +3173,24 @@ static void pdf_extract_fonts(fz_context* ctx, pdf_obj* res, Vec<pdf_obj*>& font
         pdf_obj* xobj = pdf_dict_get_val(ctx, xobjs, k);
         pdf_obj* xres = pdf_dict_gets(ctx, xobj, "Resources");
         pdf_extract_fonts(ctx, xres, fontList, resList);
+    }
+}
+
+void OnAddComment() {
+    CString text = GetTextFromUser();
+    if (!text.IsEmpty()) {
+        document->AddAnnotation("comment", std::string(CT2CA(text)), 100, 100);
+    }
+}
+
+void OnHighlightText() {
+    document->AddAnnotation("highlight", "", 50, 50, 150, 150);
+}
+
+void OnAddNote() {
+    CString note = GetTextFromUser();
+    if (!note.IsEmpty()) {
+        document->AddAnnotation("note", std::string(CT2CA(note)), 200, 200);
     }
 }
 
